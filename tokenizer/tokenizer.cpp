@@ -157,12 +157,18 @@ std::pair<std::optional<Token>,std::optional<CompilationError>> Tokenizer::nextT
 //     解析成功则返回无符号整数类型的token，否则返回编译错误
 				if(!current_char.has_value())
 				{
+					std::string temp1;
+					ss>>temp1;
+					ss.clear();
+					int ans;
+					if(temp1=="2147483648")
+					{
+						ans=-2147483648;
+						return std::make_pair(std::make_optional<Token>(TokenType::UNSIGNED_INTEGER,ans,pos,currentPos()),std::optional<CompilationError>());
+					}
 					try
 					{
-						std::string temp1;
-						ss>>temp1;
-						ss.clear();
-						int ans=std::stoi(temp1);
+						ans=std::stoi(temp1);
 						return std::make_pair(std::make_optional<Token>(TokenType::UNSIGNED_INTEGER,ans,pos,currentPos()),std::optional<CompilationError>());
 					}
 					catch(std::exception e)
@@ -182,12 +188,18 @@ std::pair<std::optional<Token>,std::optional<CompilationError>> Tokenizer::nextT
 				else
 				{
 					unreadLast();
+					std::string temp1;
+					ss>>temp1;
+					ss.clear();
+					int ans;
+					if(temp1=="2147483648")
+					{
+						ans=-2147483648;
+						return std::make_pair(std::make_optional<Token>(TokenType::UNSIGNED_INTEGER,ans,pos,currentPos()),std::optional<CompilationError>());
+					}
 					try
 					{
-						std::string temp1;
-						ss>>temp1;
-						ss.clear();
-						int ans=std::stoi(temp1);
+						ans=std::stoi(temp1);
 						return std::make_pair(std::make_optional<Token>(TokenType::UNSIGNED_INTEGER,ans,pos,currentPos()),std::optional<CompilationError>());
 					}
 					catch(std::exception e)

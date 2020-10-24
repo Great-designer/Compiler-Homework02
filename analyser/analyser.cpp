@@ -240,6 +240,7 @@ std::optional<CompilationError> Analyser::analyseConstantExpression(int32_t &out
 // +1 -1 1
 // 同时要注意是否溢出
 	auto next=nextToken();
+	int temp=1;
 	if(next.has_value()&&next.value().GetType()==TokenType::PLUS_SIGN)
 	{
 		auto err=analyseExpression();
@@ -257,8 +258,15 @@ std::optional<CompilationError> Analyser::analyseConstantExpression(int32_t &out
 			return err;
 		}
 		next=nextToken();
+		temp=-1;
 	}
 	if(!next.has_value()||next.value().GetType()!=TokenType::UNSIGNED_INTEGER)
+	{
+		return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedIdentifier);
+	}
+	out=std::any_cast<int32_t>(next.value().GetValue());
+	out*=temp; 
+	if(out==-2147483648&&temp=1)
 	{
 		return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedIdentifier);
 	}
