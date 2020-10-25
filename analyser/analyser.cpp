@@ -207,9 +207,9 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 		{
 			return {};
 		}
+		unreadToken();
 		if(next.value().GetType()!=TokenType::IDENTIFIER&&next.value().GetType()!=TokenType::PRINT&&next.value().GetType()!=TokenType::SEMICOLON)
 		{
-			unreadToken();
 			return {};
 		}
 		std::optional<CompilationError> err;
@@ -217,7 +217,6 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 		{
 // 这里需要你针对不同的预读结果来调用不同的子程序
 			case IDENTIFIER:
-				unreadToken();
 				err=analyseAssignmentStatement();
 				if(err.has_value())
 				{
@@ -225,7 +224,6 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 				}
 			break;
 			case PRINT:
-				unreadToken();
 				err=analyseOutputStatement();
 				if(err.has_value())
 				{
@@ -234,6 +232,7 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 			break;
 // 注意我们没有针对空语句单独声明一个函数，因此可以直接在这里返回
 			case SEMICOLON:
+				next=nextToken();
 			break;
 			default:
 			break;
@@ -360,7 +359,6 @@ std::optional<CompilationError> Analyser::analyseAssignmentStatement()
 // 存储这个标识符
 	auto index=getIndex(name);
 	_instructions.emplace_back(Operation::STO, index);
-//	makeInitialized(name);
 	return {};
 }
 
@@ -588,7 +586,6 @@ void Analyser::makeInitialized(const std::string &var_name)
 	auto item=_uninitialized_vars.extract(var);
 	_vars.insert(std::move(item));
 }
-
 
 int32_t Analyser::getIndex(const std::string &s)
 {
