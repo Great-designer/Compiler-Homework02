@@ -209,6 +209,7 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 		}
 		if(next.value().GetType()!=TokenType::IDENTIFIER&&next.value().GetType()!=TokenType::PRINT&&next.value().GetType()!=TokenType::SEMICOLON)
 		{
+			unreadToken();
 			return {};
 		}
 		std::optional<CompilationError> err;
@@ -359,6 +360,7 @@ std::optional<CompilationError> Analyser::analyseAssignmentStatement()
 // 存储这个标识符
 	auto index=getIndex(name);
 	_instructions.emplace_back(Operation::STO, index);
+//	makeInitialized(name);
 	return {};
 }
 
