@@ -207,7 +207,6 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 		{
 			return {};
 		}
-		unreadToken();
 		if(next.value().GetType()!=TokenType::IDENTIFIER&&next.value().GetType()!=TokenType::PRINT&&next.value().GetType()!=TokenType::SEMICOLON)
 		{
 			return {};
@@ -234,7 +233,6 @@ std::optional<CompilationError> Analyser::analyseStatementSequence()
 			break;
 // 注意我们没有针对空语句单独声明一个函数，因此可以直接在这里返回
 			case SEMICOLON:
-				return {};
 			break;
 			default:
 			break;
