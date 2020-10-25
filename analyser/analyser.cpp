@@ -256,20 +256,10 @@ std::optional<CompilationError> Analyser::analyseConstantExpression(int32_t &out
 	int temp=1;
 	if(next.has_value()&&next.value().GetType()==TokenType::PLUS_SIGN)
 	{
-		auto err=analyseExpression();
-		if(err.has_value())
-		{
-			return err;
-		}
 		next=nextToken();
 	}
 	else if(next.has_value()&&next.value().GetType()==TokenType::MINUS_SIGN)
 	{
-		auto err=analyseExpression();
-		if(err.has_value())
-		{
-			return err;
-		}
 		next=nextToken();
 		temp=-1;
 	}
