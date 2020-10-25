@@ -337,12 +337,12 @@ std::optional<CompilationError> Analyser::analyseAssignmentStatement()
 	ident=next.value();
 	auto name=ident.GetValueString();
 // 未定义
-	if(isDeclared(name))
+	if(!isDeclared(name))
 	{
 		return {CompilationError(_current_pos, ErrorCode::ErrNotDeclared)};
 	}
 // 是常量
-	if (isConstant(name))
+	if(isConstant(name))
 	{
 		return {CompilationError(_current_pos, ErrorCode::ErrAssignToConstant)};
 	}
