@@ -359,7 +359,6 @@ std::optional<CompilationError> Analyser::analyseAssignmentStatement()
 // 存储这个标识符
 	auto index=getIndex(name);
 	_instructions.emplace_back(Operation::STO, index);
-	makeInitialized(name);
 	return {};
 }
 
