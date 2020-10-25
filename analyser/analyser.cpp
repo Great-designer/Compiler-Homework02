@@ -268,10 +268,13 @@ std::optional<CompilationError> Analyser::analyseConstantExpression(int32_t &out
 		return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedIdentifier);
 	}
 	out=std::any_cast<int32_t>(next.value().GetValue());
-	out*=temp; 
 	if(out==-2147483648&&temp==1)
 	{
 		return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedIdentifier);
+	}
+	else if(out!=-2147483648)
+	{
+		out*=temp;
 	}
 	return {};
 }
