@@ -359,9 +359,9 @@ std::optional<CompilationError> Analyser::analyseAssignmentStatement()
 // 存储这个标识符
 	auto index=getIndex(name);
 	_instructions.emplace_back(Operation::STO,index);
-	if(!isInitializedVariable(name))
+	if(!isInitializedVariable(next.value()))
 	{
-		makeInitialized(next.value());
+		makeInitialized(name);
 	}
 	return {};
 }
