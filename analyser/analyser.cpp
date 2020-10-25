@@ -324,12 +324,12 @@ std::optional<CompilationError> Analyser::analyseExpression()
 // 需要补全5
 std::optional<CompilationError> Analyser::analyseAssignmentStatement()
 {
-	auto ident=Token(TokenType::NULL_TOKEN,nullptr,0,0,0,0);//标识符的 token
-	auto next=nextToken();
 // 这里除了语法分析以外还要留意
 // 标识符声明过吗？
 // 标识符是常量吗？
 // 需要生成指令吗？
+	auto ident=Token(TokenType::NULL_TOKEN,nullptr,0,0,0,0);//标识符的 token
+	auto next=nextToken();
 	if(!next.has_value()||next.value().GetType()!=TokenType::IDENTIFIER)
 	{
 		return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedIdentifier);
