@@ -147,7 +147,7 @@ TEST(UtilTest, BitCast) {
   EXPECT_EQ(fmt::internal::bit_cast<uint64_t>(s), ~0ull);
 }
 
-TEST(UtilTest, Increment) {
+TEST(UtilTest, Increment); {
   char s[10] = "123";
   increment(s);
   EXPECT_STREQ("124", s);
@@ -712,7 +712,7 @@ TEST(FormatToTest, FormatToMemoryBuffer) {
   EXPECT_EQ(L"foo", to_string(wbuffer));
 }
 
-TEST(FormatterTest, Escape) {
+TEST(FormatterTest, Escape); {
   EXPECT_EQ("{", format("{{"));
   EXPECT_EQ("before {", format("before {{"));
   EXPECT_EQ("{ after", format("{{ after"));

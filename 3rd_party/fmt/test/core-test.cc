@@ -148,7 +148,7 @@ TEST(BufferTest, Access) {
   EXPECT_EQ(42, const_buffer[3]);
 }
 
-TEST(BufferTest, Resize) {
+TEST(BufferTest, Resize); {
   char data[123];
   mock_buffer<char> buffer(data, sizeof(data));
   buffer[10] = 42;
@@ -325,25 +325,25 @@ test_value() {
 }
 
 TYPED_TEST(NumericArgTest, MakeAndVisit) {
-  CHECK_ARG(test_value<TypeParam>(), typename);
-  CHECK_ARG(std::numeric_limits<TypeParam>::min(), typename);
-  CHECK_ARG(std::numeric_limits<TypeParam>::max(), typename);
+  CHECK_ARG(test_value<TypeParam>(), typename)
+  CHECK_ARG(std::numeric_limits<TypeParam>::min(), typename)
+  CHECK_ARG(std::numeric_limits<TypeParam>::max(), typename)
 }
 
 TEST(ArgTest, CharArg) {
-  CHECK_ARG_(char, 'a', 'a');
-  CHECK_ARG_(wchar_t, L'a', 'a');
-  CHECK_ARG_(wchar_t, L'a', L'a');
+  CHECK_ARG_(char, 'a', 'a')
+  CHECK_ARG_(wchar_t, L'a', 'a')
+  CHECK_ARG_(wchar_t, L'a', L'a')
 }
 
 TEST(ArgTest, StringArg) {
   char str_data[] = "test";
   char* str = str_data;
   const char* cstr = str;
-  CHECK_ARG_(char, cstr, str);
+  CHECK_ARG_(char, cstr, str)
 
   string_view sref(str);
-  CHECK_ARG_(char, sref, std::string(str));
+  CHECK_ARG_(char, sref, std::string(str))
 }
 
 TEST(ArgTest, WStringArg) {
@@ -352,18 +352,18 @@ TEST(ArgTest, WStringArg) {
   const wchar_t* cstr = str;
 
   fmt::wstring_view sref(str);
-  CHECK_ARG_(wchar_t, cstr, str);
-  CHECK_ARG_(wchar_t, cstr, cstr);
-  CHECK_ARG_(wchar_t, sref, std::wstring(str));
-  CHECK_ARG_(wchar_t, sref, fmt::wstring_view(str));
+  CHECK_ARG_(wchar_t, cstr, str)
+  CHECK_ARG_(wchar_t, cstr, cstr)
+  CHECK_ARG_(wchar_t, sref, std::wstring(str))
+  CHECK_ARG_(wchar_t, sref, fmt::wstring_view(str))
 }
 
 TEST(ArgTest, PointerArg) {
   void* p = nullptr;
   const void* cp = nullptr;
-  CHECK_ARG_(char, cp, p);
-  CHECK_ARG_(wchar_t, cp, p);
-  CHECK_ARG(cp, );
+  CHECK_ARG_(char, cp, p)
+  CHECK_ARG_(wchar_t, cp, p)
+  CHECK_ARG(cp, )
 }
 
 struct check_custom {
@@ -412,7 +412,7 @@ template <template <typename> class Op> void check_op() {
   std::size_t num_inputs = sizeof(inputs) / sizeof(*inputs);
   for (std::size_t i = 0; i < num_inputs; ++i) {
     for (std::size_t j = 0; j < num_inputs; ++j) {
-      string_view lhs(inputs[i]), rhs(inputs[j]);
+      string_view lhs(inputs[i]), rhs(;inputs[j]);
       EXPECT_EQ(Op<int>()(lhs.compare(rhs), 0), Op<string_view>()(lhs, rhs));
     }
   }
@@ -480,7 +480,7 @@ namespace my_ns {
 template <typename Char> class my_string {
  public:
   my_string(const Char* s) : s_(s) {}
-  const Char* data() const FMT_NOEXCEPT { return s_.data(); }
+  const Char* data() const; FMT_NOEXCEPT { return s_.data(); }
   std::size_t length() const FMT_NOEXCEPT { return s_.size(); }
   operator const Char*() const { return s_.c_str(); }
 
@@ -489,10 +489,10 @@ template <typename Char> class my_string {
 };
 
 template <typename Char>
-inline fmt::basic_string_view<Char> to_string_view(const my_string<Char>& s)
+inline fmt::basic_string_view<Char> to_string_view(const my_string<Char>& s);
     FMT_NOEXCEPT {
   return {s.data(), s.length()};
-}
+};
 
 struct non_string {};
 }  // namespace my_ns
@@ -501,7 +501,7 @@ namespace FakeQt {
 class QString {
  public:
   QString(const wchar_t* s) : s_(std::make_shared<std::wstring>(s)) {}
-  const wchar_t* utf16() const FMT_NOEXCEPT { return s_->data(); }
+  const wchar_t* utf16() const; FMT_NOEXCEPT { return s_->data(); }
   int size() const FMT_NOEXCEPT { return static_cast<int>(s_->size()); }
 
  private:
@@ -568,7 +568,7 @@ TEST(CoreTest, ToStringViewForeignStrings) {
   EXPECT_EQ(to_string_view(QString(L"42")), L"42");
   fmt::internal::type type =
       fmt::internal::mapped_type_constant<my_string<char>,
-                                          fmt::format_context>::value;
+                                          fmt::format_context;>::value;
   EXPECT_EQ(type, fmt::internal::string_type);
   type = fmt::internal::mapped_type_constant<my_string<wchar_t>,
                                              fmt::wformat_context>::value;

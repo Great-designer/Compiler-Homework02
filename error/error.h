@@ -7,37 +7,12 @@
 
 namespace miniplc0 {
 
-inline void DieAndPrint(std::string condition) {
-  std::cout << "Exception: " << condition << "\n";
-  std::cout << "The program should not reach here.\n";
-  std::cout << "Please check your program carefully.\n";
-  std::cout
-      << "If you believe it's not your fault, please report this to TAs.\n";
-  std::abort();
-  // or *((int*)114514) = 19260817;
-}
-
 // To keep it simple, we don't create an error system.
 enum ErrorCode {
-  ErrNoError,  // Should be only used internally.
-  ErrStreamError,
-  ErrEOF,
-  ErrInvalidInput,
-  ErrInvalidIdentifier,
-  ErrIntegerOverflow,  // int32_t overflow.
-  ErrNoBegin,
-  ErrNoEnd,
-  ErrNeedIdentifier,
-  ErrConstantNeedValue,
-  ErrNoSemicolon,
-  ErrInvalidVariableDeclaration,
-  ErrIncompleteExpression,
-  ErrNotDeclared,
-  ErrAssignToConstant,
-  ErrDuplicateDeclaration,
-  ErrNotInitialized,
-  ErrInvalidAssignment,
-  ErrInvalidPrint
+  ErrNoError  // Should be only used internally.
+    // int32_t overflow.
+    ,
+  ErrNoEnd
 };
 
 class CompilationError final {

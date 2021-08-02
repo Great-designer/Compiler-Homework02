@@ -11,7 +11,7 @@
 #ifndef FMT_STATIC_THOUSANDS_SEPARATOR
 template <typename Char> struct numpunct : std::numpunct<Char> {
  protected:
-  Char do_decimal_point() const FMT_OVERRIDE { return '?'; }
+  Char do_decimal_point() const; FMT_OVERRIDE { return '?'; }
   Char do_thousands_sep() const FMT_OVERRIDE { return '~'; }
 };
 

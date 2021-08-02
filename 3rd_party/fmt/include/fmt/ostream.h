@@ -21,10 +21,7 @@ template <class Char> class formatbuf : public std::basic_streambuf<Char> {
 
   buffer<Char>& buffer_;
 
- public:
-  formatbuf(buffer<Char>& buf) : buffer_(buf) {}
-
- protected:
+protected:
   // The put-area is actually always empty. This makes the implementation
   // simpler and has the advantage that the streambuf and the buffer are always
   // in sync and sputc never writes into uninitialized memory. The obvious
@@ -47,21 +44,26 @@ template <class Char> class formatbuf : public std::basic_streambuf<Char> {
 template <typename Char> struct test_stream : std::basic_ostream<Char> {
  private:
   struct null;
-  // Hide all operator<< from std::basic_ostream<Char>.
-  void operator<<(null);
+
+    virtual // Hide all operator<< from std::basic_ostream<Char>.
+  void operator<<(null) = 0;
 };
 
 // Checks if T has a user-defined operator<< (e.g. not a member of
 // std::ostream).
 template <typename T, typename Char> class is_streamable {
  private:
-  template <typename U>
+        virtual
+
+        template <typename U>
   static decltype((void)(std::declval<test_stream<Char>&>()
                          << std::declval<U>()),
                   std::true_type())
-  test(int);
+  test(int) = 0;
 
-  template <typename> static std::false_type test(...);
+        virtual
+
+        template <typename> static std::false_type test(...) = 0;
 
   using result = decltype(test<T>(0));
 

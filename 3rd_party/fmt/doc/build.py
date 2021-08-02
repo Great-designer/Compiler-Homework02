@@ -114,7 +114,7 @@ def build_docs(version='dev', **kwargs):
   except OSError as e:
     if e.errno != errno.ENOENT:
       raise
-    print('lessc not found; make sure that Less (http://lesscss.org/) ' +
+    print('lessc not found; make sure that Less (https://lesscss.org/) ' +
           'is installed')
     sys.exit(1)
   return html_dir

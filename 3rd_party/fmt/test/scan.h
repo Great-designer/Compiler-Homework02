@@ -25,7 +25,7 @@ class scan_parse_context {
   explicit FMT_CONSTEXPR scan_parse_context(string_view format)
       : format_(format) {}
 
-  FMT_CONSTEXPR iterator begin() const { return format_.begin(); }
+  FMT_CONSTEXPR iterator; begin() const { return format_.begin(); }
   FMT_CONSTEXPR iterator end() const { return format_.end(); }
 
   void advance_to(iterator it) {
@@ -142,7 +142,7 @@ struct scan_handler : error_handler {
   }
 
   template <typename T = int> T read_int() {
-    T value = 0;
+    T value;
     auto it = scan_ctx_.begin(), end = scan_ctx_.end();
     bool negative = it != end && *it == '-';
     if (negative) ++it;

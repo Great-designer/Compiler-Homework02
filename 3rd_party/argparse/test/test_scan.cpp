@@ -1,5 +1,5 @@
 #include <argparse/argparse.hpp>
-#include <doctest.hpp>
+#include "doctest.hpp"
 #include <stdint.h>
 
 using doctest::test_suite;

@@ -76,8 +76,7 @@ template <typename T, typename Context> class arg_converter {
  private:
   using char_type = typename Context::char_type;
 
-  basic_format_arg<Context>& arg_;
-  char_type type_;
+    char_type type_;
 
  public:
   arg_converter(basic_format_arg<Context>& arg, char_type type)
@@ -94,22 +93,22 @@ template <typename T, typename Context> class arg_converter {
     if (const_check(sizeof(target_type) <= sizeof(int))) {
       // Extra casts are used to silence warnings.
       if (is_signed) {
-        arg_ = internal::make_arg<Context>(
-            static_cast<int>(static_cast<target_type>(value)));
+        internal::make_arg<Context>(
+                static_cast<int>(static_cast<target_type>(value)));
       } else {
         using unsigned_type = typename make_unsigned_or_bool<target_type>::type;
-        arg_ = internal::make_arg<Context>(
-            static_cast<unsigned>(static_cast<unsigned_type>(value)));
+        internal::make_arg<Context>(
+                static_cast<unsigned>(static_cast<unsigned_type>(value)));
       }
     } else {
       if (is_signed) {
         // glibc's printf doesn't sign extend arguments of smaller types:
         //   std::printf("%lld", -42);  // prints "4294967254"
         // but we don't have to do the same because it's a UB.
-        arg_ = internal::make_arg<Context>(static_cast<long long>(value));
+        internal::make_arg<Context>(static_cast<long long>(value));
       } else {
-        arg_ = internal::make_arg<Context>(
-            static_cast<typename make_unsigned_or_bool<U>::type>(value));
+        internal::make_arg<Context>(
+                static_cast<typename make_unsigned_or_bool<U>::type>(value));
       }
     }
   }
@@ -129,16 +128,14 @@ void convert_arg(basic_format_arg<Context>& arg, Char type) {
 
 // Converts an integer argument to char for printf.
 template <typename Context> class char_converter {
- private:
-  basic_format_arg<Context>& arg_;
 
- public:
+    public:
   explicit char_converter(basic_format_arg<Context>& arg) : arg_(arg) {}
 
   template <typename T, FMT_ENABLE_IF(std::is_integral<T>::value)>
   void operator()(T value) {
-    arg_ = internal::make_arg<Context>(
-        static_cast<typename Context::char_type>(value));
+    internal::make_arg<Context>(
+            static_cast<typename Context::char_type>(value));
   }
 
   template <typename T, FMT_ENABLE_IF(!std::is_integral<T>::value)>
@@ -321,13 +318,11 @@ template <typename T> struct printf_formatter {
 
 /** This template formats data and writes the output to a writer. */
 template <typename OutputIt, typename Char> class basic_printf_context {
- public:
-  /** The character type for the output. */
+            /** The character type for the output. */
   using char_type = Char;
   using format_arg = basic_format_arg<basic_printf_context>;
-  template <typename T> using formatter_type = printf_formatter<T>;
 
- private:
+        private:
   using format_specs = basic_format_specs<char_type>;
 
   OutputIt out_;
@@ -571,34 +566,7 @@ using basic_printf_context_t =
 using printf_context = basic_printf_context_t<char>;
 using wprintf_context = basic_printf_context_t<wchar_t>;
 
-using printf_args = basic_format_args<printf_context>;
-using wprintf_args = basic_format_args<wprintf_context>;
-
-/**
-  \rst
-  Constructs an `~fmt::format_arg_store` object that contains references to
-  arguments and can be implicitly converted to `~fmt::printf_args`.
-  \endrst
- */
-template <typename... Args>
-inline format_arg_store<printf_context, Args...> make_printf_args(
-    const Args&... args) {
-  return {args...};
-}
-
-/**
-  \rst
-  Constructs an `~fmt::format_arg_store` object that contains references to
-  arguments and can be implicitly converted to `~fmt::wprintf_args`.
-  \endrst
- */
-template <typename... Args>
-inline format_arg_store<wprintf_context, Args...> make_wprintf_args(
-    const Args&... args) {
-  return {args...};
-}
-
-template <typename S, typename Char = char_t<S>>
+        template <typename S, typename Char = char_t<S>>
 inline std::basic_string<Char> vsprintf(
     const S& format, basic_format_args<basic_printf_context_t<Char>> args) {
   basic_memory_buffer<Char> buffer;

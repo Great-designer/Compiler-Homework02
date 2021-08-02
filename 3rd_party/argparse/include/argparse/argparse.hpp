@@ -490,7 +490,7 @@ public:
   }
 
   template <typename T> bool operator!=(const T &aRhs) const {
-    return !(*this == aRhs);
+    return *this != aRhs;
   }
 
   /*

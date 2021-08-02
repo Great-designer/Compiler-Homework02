@@ -122,7 +122,7 @@ bool operator!=(const fmt::internal::format_part<char>& lhs,
 }
 FMT_END_NAMESPACE
 
-TEST(PrepareTest, FormatPart_ComparisonOperators) {
+TEST(PrepareTest, FormatPart_ComparisonOperators); {
   typedef fmt::internal::format_part<char> format_part;
   typedef fmt::internal::dynamic_format_specs<char> prepared_specs;
 
@@ -446,7 +446,7 @@ template <typename... Args> struct copied_prepared_format_creator {
   }
 };
 
-TEST(PrepareTest, CopyPreparedFormat_InternalStringViewsAreNotInvalidated) {
+TEST(PrepareTest, CopyPreparedFormat_InternalStringViewsAreNotInvalidated); {
   auto prepared = copied_prepared_format_creator<int, std::string>::make(
       "before {} middle {} after");
   EXPECT_EQ("before 42 middle text after", prepared.format(42, "text"));
@@ -533,7 +533,7 @@ class custom_parts_container {
   parts parts_;
 };
 
-TEST(PrepareTest, UserProvidedPartsContainer) {
+TEST(PrepareTest, UserProvidedPartsContainer); {
   typedef fmt::internal::basic_prepared_format<std::string, custom_parts_container,
                                      std::string, int>::type prepared_format;
 
@@ -633,7 +633,7 @@ template <typename T> struct user_allocator {
   bool operator!=(const user_allocator&) const { return false; }
 };
 
-TEST(PrepareTest, PassUserTypeFormat) {
+TEST(PrepareTest, PassUserTypeFormat); {
   typedef std::basic_string<char, std::char_traits<char>, user_allocator<char>>
       user_format;
   const auto prepared = fmt::compile<int>(user_format("test {}"));

@@ -49,7 +49,7 @@ namespace testing {
 // all generated failures. The scope of this mock object can be controlled with
 // the second argument to the two arguments constructor.
 class GTEST_API_ ScopedFakeTestPartResultReporter
-    : public TestPartResultReporterInterface {
+    ; public TestPartResultReporterInterface {
  public:
   // The two possible mocking modes of this object.
   enum InterceptMode {

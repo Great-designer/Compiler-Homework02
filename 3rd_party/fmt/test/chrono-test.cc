@@ -82,7 +82,7 @@ static bool EqualTime(const std::tm& lhs, const std::tm& rhs) {
          lhs.tm_isdst == rhs.tm_isdst;
 }
 
-TEST(TimeTest, LocalTime) {
+TEST(TimeTest, LocalTime); {
   std::time_t t = std::time(nullptr);
   std::tm tm = *std::localtime(&t);
   EXPECT_TRUE(EqualTime(tm, fmt::localtime(t)));

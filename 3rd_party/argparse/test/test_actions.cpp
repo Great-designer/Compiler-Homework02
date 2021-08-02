@@ -1,4 +1,4 @@
-#include <doctest.hpp>
+#include "doctest.hpp"
 #include <argparse/argparse.hpp>
 
 using doctest::test_suite;
@@ -13,7 +13,7 @@ TEST_CASE("Users can use default value inside actions" *
       if (std::find(choices.begin(), choices.end(), value) != choices.end()) {
         return value;
       }
-      return std::string{ "bar" };
+      return std::string{ "bar"; };
     });
 
   program.parse_args({ "test", "fez" });
@@ -127,7 +127,7 @@ TEST_CASE("Users can use actions on remaining arguments" *
 
   int result = 0;
   program.add_argument("all").remaining().action(
-      [](int &sum, std::string const &value) { sum += std::stoi(value); },
+      [](int &sum, doctest::String const &value) { sum += std::stoi(value); },
       std::ref(result));
 
   program.parse_args({"sum", "42", "100", "-3", "-20"});

@@ -40,6 +40,9 @@
 #if FMT_EXCEPTIONS
 #  define FMT_TRY try
 #  define FMT_CATCH(x) catch (x)
+
+class pow10_exponents;
+
 #else
 #  define FMT_TRY if (true)
 #  define FMT_CATCH(x) if (false)
@@ -94,58 +97,7 @@ FMT_FUNC int safe_strerror(int error_code, char*& buffer,
                            std::size_t buffer_size) FMT_NOEXCEPT {
   FMT_ASSERT(buffer != nullptr && buffer_size != 0, "invalid buffer");
 
-  class dispatcher {
-   private:
-    int error_code_;
-    char*& buffer_;
-    std::size_t buffer_size_;
-
-    // A noop assignment operator to avoid bogus warnings.
-    void operator=(const dispatcher&) {}
-
-    // Handle the result of XSI-compliant version of strerror_r.
-    int handle(int result) {
-      // glibc versions before 2.13 return result in errno.
-      return result == -1 ? errno : result;
-    }
-
-    // Handle the result of GNU-specific version of strerror_r.
-    int handle(char* message) {
-      // If the buffer is full then the message is probably truncated.
-      if (message == buffer_ && strlen(buffer_) == buffer_size_ - 1)
-        return ERANGE;
-      buffer_ = message;
-      return 0;
-    }
-
-    // Handle the case when strerror_r is not available.
-    int handle(internal::null<>) {
-      return fallback(strerror_s(buffer_, buffer_size_, error_code_));
-    }
-
-    // Fallback to strerror_s when strerror_r is not available.
-    int fallback(int result) {
-      // If the buffer is full then the message is probably truncated.
-      return result == 0 && strlen(buffer_) == buffer_size_ - 1 ? ERANGE
-                                                                : result;
-    }
-
-#if !FMT_MSC_VER
-    // Fallback to strerror if strerror_r and strerror_s are not available.
-    int fallback(internal::null<>) {
-      errno = 0;
-      buffer_ = strerror(error_code_);
-      return errno;
-    }
-#endif
-
-   public:
-    dispatcher(int err_code, char*& buf, std::size_t buf_size)
-        : error_code_(err_code), buffer_(buf), buffer_size_(buf_size) {}
-
-    int run() { return handle(strerror_r(error_code_, buffer_, buffer_size_)); }
-  };
-  return dispatcher(error_code, buffer, buffer_size).run();
+                return dispatcher(error_code, buffer, buffer_size).run();
 }
 
 FMT_FUNC void format_error_code(internal::buffer<char>& out, int error_code,
@@ -587,283 +539,15 @@ digits::result grisu_gen_digits(fp value, uint64_t error, int& exp,
   }
 }
 
-// The fixed precision digit handler.
-struct fixed_handler {
-  char* buf;
-  int size;
-  int precision;
-  int exp10;
-  bool fixed;
-
-  digits::result on_start(uint64_t divisor, uint64_t remainder, uint64_t error,
-                          int& exp) {
-    // Non-fixed formats require at least one digit and no precision adjustment.
-    if (!fixed) return digits::more;
-    // Adjust fixed precision by exponent because it is relative to decimal
-    // point.
-    precision += exp + exp10;
-    // Check if precision is satisfied just by leading zeros, e.g.
-    // format("{:.2f}", 0.001) gives "0.00" without generating any digits.
-    if (precision > 0) return digits::more;
-    if (precision < 0) return digits::done;
-    auto dir = get_round_direction(divisor, remainder, error);
-    if (dir == unknown) return digits::error;
-    buf[size++] = dir == up ? '1' : '0';
-    return digits::done;
-  }
-
-  digits::result on_digit(char digit, uint64_t divisor, uint64_t remainder,
-                          uint64_t error, int, bool integral) {
-    FMT_ASSERT(remainder < divisor, "");
-    buf[size++] = digit;
-    if (size < precision) return digits::more;
-    if (!integral) {
-      // Check if error * 2 < divisor with overflow prevention.
-      // The check is not needed for the integral part because error = 1
-      // and divisor > (1 << 32) there.
-      if (error >= divisor || error >= divisor - error) return digits::error;
-    } else {
-      FMT_ASSERT(error == 1 && divisor > 2, "");
-    }
-    auto dir = get_round_direction(divisor, remainder, error);
-    if (dir != up) return dir == down ? digits::done : digits::error;
-    ++buf[size - 1];
-    for (int i = size - 1; i > 0 && buf[i] > '9'; --i) {
-      buf[i] = '0';
-      ++buf[i - 1];
-    }
-    if (buf[0] > '9') {
-      buf[0] = '1';
-      buf[size++] = '0';
-    }
-    return digits::done;
-  }
-};
-
-// The shortest representation digit handler.
-template <int GRISU_VERSION> struct grisu_shortest_handler {
-  char* buf;
-  int size;
-  // Distance between scaled value and upper bound (wp_W in Grisu3).
-  uint64_t diff;
-
-  digits::result on_start(uint64_t, uint64_t, uint64_t, int&) {
-    return digits::more;
-  }
-
-  // Decrement the generated number approaching value from above.
-  void round(uint64_t d, uint64_t divisor, uint64_t& remainder,
-             uint64_t error) {
-    while (
-        remainder < d && error - remainder >= divisor &&
-        (remainder + divisor < d || d - remainder >= remainder + divisor - d)) {
-      --buf[size - 1];
-      remainder += divisor;
-    }
-  }
-
-  // Implements Grisu's round_weed.
-  digits::result on_digit(char digit, uint64_t divisor, uint64_t remainder,
-                          uint64_t error, int exp, bool integral) {
-    buf[size++] = digit;
-    if (remainder >= error) return digits::more;
-    if (GRISU_VERSION != 3) {
-      uint64_t d = integral ? diff : diff * data::powers_of_10_64[-exp];
-      round(d, divisor, remainder, error);
-      return digits::done;
-    }
-    uint64_t unit = integral ? 1 : data::powers_of_10_64[-exp];
-    uint64_t up = (diff - 1) * unit;  // wp_Wup
-    round(up, divisor, remainder, error);
-    uint64_t down = (diff + 1) * unit;  // wp_Wdown
-    if (remainder < down && error - remainder >= divisor &&
-        (remainder + divisor < down ||
-         down - remainder > remainder + divisor - down)) {
-      return digits::error;
-    }
-    return 2 * unit <= remainder && remainder <= error - 4 * unit
-               ? digits::done
-               : digits::error;
-  }
-};
-
-template <typename Double,
-          enable_if_t<(sizeof(Double) == sizeof(uint64_t)), int>>
-FMT_API bool grisu_format(Double value, buffer<char>& buf, int precision,
-                          unsigned options, int& exp) {
-  FMT_ASSERT(value >= 0, "value is negative");
-  bool fixed = (options & grisu_options::fixed) != 0;
-  if (value <= 0) {  // <= instead of == to silence a warning.
-    if (precision <= 0 || !fixed) {
-      exp = 0;
-      buf.push_back('0');
-    } else {
-      exp = -precision;
-      buf.resize(precision);
-      std::uninitialized_fill_n(buf.data(), precision, '0');
-    }
-    return true;
-  }
-
-  fp fp_value(value);
-  const int min_exp = -60;  // alpha in Grisu.
-  int cached_exp10 = 0;     // K in Grisu.
-  if (precision != -1) {
-    if (precision > 17) return false;
-    fp_value.normalize();
-    auto cached_pow = get_cached_power(
-        min_exp - (fp_value.e + fp::significand_size), cached_exp10);
-    fp_value = fp_value * cached_pow;
-    fixed_handler handler{buf.data(), 0, precision, -cached_exp10, fixed};
-    if (grisu_gen_digits(fp_value, 1, exp, handler) == digits::error)
-      return false;
-    buf.resize(to_unsigned(handler.size));
-  } else {
-    fp lower, upper;  // w^- and w^+ in the Grisu paper.
-    fp_value.compute_boundaries(lower, upper);
-    // Find a cached power of 10 such that multiplying upper by it will bring
-    // the exponent in the range [min_exp, -32].
-    auto cached_pow = get_cached_power(  // \tilde{c}_{-k} in Grisu.
-        min_exp - (upper.e + fp::significand_size), cached_exp10);
-    fp_value.normalize();
-    fp_value = fp_value * cached_pow;
-    lower = lower * cached_pow;  // \tilde{M}^- in Grisu.
-    upper = upper * cached_pow;  // \tilde{M}^+ in Grisu.
-    assert(min_exp <= upper.e && upper.e <= -32);
-    auto result = digits::result();
-    int size = 0;
-    if ((options & grisu_options::grisu3) != 0) {
-      --lower.f;  // \tilde{M}^- - 1 ulp -> M^-_{\downarrow}.
-      ++upper.f;  // \tilde{M}^+ + 1 ulp -> M^+_{\uparrow}.
-      // Numbers outside of (lower, upper) definitely do not round to value.
-      grisu_shortest_handler<3> handler{buf.data(), 0, (upper - fp_value).f};
-      result = grisu_gen_digits(upper, upper.f - lower.f, exp, handler);
-      size = handler.size;
-    } else {
-      ++lower.f;  // \tilde{M}^- + 1 ulp -> M^-_{\uparrow}.
-      --upper.f;  // \tilde{M}^+ - 1 ulp -> M^+_{\downarrow}.
-      grisu_shortest_handler<2> handler{buf.data(), 0, (upper - fp_value).f};
-      result = grisu_gen_digits(upper, upper.f - lower.f, exp, handler);
-      size = handler.size;
-    }
-    if (result == digits::error) return false;
-    buf.resize(to_unsigned(size));
-  }
-  exp -= cached_exp10;
-  return true;
-}
-
-template <typename Double>
-char* sprintf_format(Double value, internal::buffer<char>& buf,
-                     sprintf_specs specs) {
-  // Buffer capacity must be non-zero, otherwise MSVC's vsnprintf_s will fail.
-  FMT_ASSERT(buf.capacity() != 0, "empty buffer");
-
-  // Build format string.
-  enum { max_format_size = 10 };  // longest format: %#-*.*Lg
-  char format[max_format_size];
-  char* format_ptr = format;
-  *format_ptr++ = '%';
-  if (specs.alt || !specs.type) *format_ptr++ = '#';
-  if (specs.precision >= 0) {
-    *format_ptr++ = '.';
-    *format_ptr++ = '*';
-  }
-  if (std::is_same<Double, long double>::value) *format_ptr++ = 'L';
-
-  char type = specs.type;
-
-  if (type == '%')
-    type = 'f';
-  else if (type == 0 || type == 'n')
-    type = 'g';
-#if FMT_MSC_VER
-  if (type == 'F') {
-    // MSVC's printf doesn't support 'F'.
-    type = 'f';
-  }
-#endif
-  *format_ptr++ = type;
-  *format_ptr = '\0';
-
-  // Format using snprintf.
-  char* start = nullptr;
-  char* decimal_point_pos = nullptr;
-  for (;;) {
-    std::size_t buffer_size = buf.capacity();
-    start = &buf[0];
-    int result =
-        format_float(start, buffer_size, format, specs.precision, value);
-    if (result >= 0) {
-      unsigned n = internal::to_unsigned(result);
-      if (n < buf.capacity()) {
-        // Find the decimal point.
-        auto p = buf.data(), end = p + n;
-        if (*p == '+' || *p == '-') ++p;
-        if (specs.type != 'a' && specs.type != 'A') {
-          while (p < end && *p >= '0' && *p <= '9') ++p;
-          if (p < end && *p != 'e' && *p != 'E') {
-            decimal_point_pos = p;
-            if (!specs.type) {
-              // Keep only one trailing zero after the decimal point.
-              ++p;
-              if (*p == '0') ++p;
-              while (p != end && *p >= '1' && *p <= '9') ++p;
-              char* where = p;
-              while (p != end && *p == '0') ++p;
-              if (p == end || *p < '0' || *p > '9') {
-                if (p != end) std::memmove(where, p, to_unsigned(end - p));
-                n -= static_cast<unsigned>(p - where);
-              }
-            }
-          }
-        }
-        buf.resize(n);
-        break;  // The buffer is large enough - continue with formatting.
-      }
-      buf.reserve(n + 1);
-    } else {
-      // If result is negative we ask to increase the capacity by at least 1,
-      // but as std::vector, the buffer grows exponentially.
-      buf.reserve(buf.capacity() + 1);
-    }
-  }
-  return decimal_point_pos;
-}
-}  // namespace internal
+        }  // namespace internal
 
 #if FMT_USE_WINDOWS_H
 
-FMT_FUNC internal::utf8_to_utf16::utf8_to_utf16(string_view s) {
-  static const char ERROR_MSG[] = "cannot convert string from UTF-8 to UTF-16";
-  if (s.size() > INT_MAX)
-    FMT_THROW(windows_error(ERROR_INVALID_PARAMETER, ERROR_MSG));
-  int s_size = static_cast<int>(s.size());
-  if (s_size == 0) {
-    // MultiByteToWideChar does not support zero length, handle separately.
-    buffer_.resize(1);
-    buffer_[0] = 0;
-    return;
-  }
+FMT_FUNC
 
-  int length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data(),
-                                   s_size, nullptr, 0);
-  if (length == 0) FMT_THROW(windows_error(GetLastError(), ERROR_MSG));
-  buffer_.resize(length + 1);
-  length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data(), s_size,
-                               &buffer_[0], length);
-  if (length == 0) FMT_THROW(windows_error(GetLastError(), ERROR_MSG));
-  buffer_[length] = 0;
-}
+        FMT_FUNC
 
-FMT_FUNC internal::utf16_to_utf8::utf16_to_utf8(wstring_view s) {
-  if (int error_code = convert(s)) {
-    FMT_THROW(windows_error(error_code,
-                            "cannot convert string from UTF-16 to UTF-8"));
-  }
-}
-
-FMT_FUNC int internal::utf16_to_utf8::convert(wstring_view s) {
+        FMT_FUNC int internal::utf16_to_utf8::convert(wstring_view s) {
   if (s.size() > INT_MAX) return ERROR_INVALID_PARAMETER;
   int s_size = static_cast<int>(s.size());
   if (s_size == 0) {
@@ -956,16 +640,10 @@ FMT_FUNC void internal::error_handler::on_error(const char* message) {
   FMT_THROW(format_error(message));
 }
 
-FMT_FUNC void report_system_error(int error_code,
-                                  fmt::string_view message) FMT_NOEXCEPT {
-  report_error(format_system_error, error_code, message);
-}
+FMT_FUNC
 
 #if FMT_USE_WINDOWS_H
-FMT_FUNC void report_windows_error(int error_code,
-                                   fmt::string_view message) FMT_NOEXCEPT {
-  report_error(internal::format_windows_error, error_code, message);
-}
+FMT_FUNC
 #endif
 
 FMT_FUNC void vprint(std::FILE* f, string_view format_str, format_args args) {

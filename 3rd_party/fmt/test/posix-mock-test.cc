@@ -65,7 +65,7 @@ enum FStatSimulation { NONE, MAX_SIZE, ERROR } fstat_sim;
 
 #ifndef _MSC_VER
 int test::open(const char* path, int oflag, int mode) {
-  EMULATE_EINTR(open, -1);
+  EMULATE_EINTR(open, -1)
   return ::open(path, oflag, mode);
 }
 #else
@@ -116,34 +116,34 @@ DWORD test::GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh) {
 int test::close(int fildes) {
   // Close the file first because close shouldn't be retried.
   int result = ::FMT_POSIX(close(fildes));
-  EMULATE_EINTR(close, -1);
+  EMULATE_EINTR(close, -1)
   return result;
 }
 
 int test::dup(int fildes) {
-  EMULATE_EINTR(dup, -1);
+  EMULATE_EINTR(dup, -1)
   return ::FMT_POSIX(dup(fildes));
 }
 
 int test::dup2(int fildes, int fildes2) {
-  EMULATE_EINTR(dup2, -1);
+  EMULATE_EINTR(dup2, -1)
   return ::FMT_POSIX(dup2(fildes, fildes2));
 }
 
 FILE* test::fdopen(int fildes, const char* mode) {
-  EMULATE_EINTR(fdopen, nullptr);
+  EMULATE_EINTR(fdopen, nullptr)
   return ::FMT_POSIX(fdopen(fildes, mode));
 }
 
 test::ssize_t test::read(int fildes, void* buf, test::size_t nbyte) {
   read_nbyte = nbyte;
-  EMULATE_EINTR(read, -1);
+  EMULATE_EINTR(read, -1)
   return ::FMT_POSIX(read(fildes, buf, nbyte));
 }
 
 test::ssize_t test::write(int fildes, const void* buf, test::size_t nbyte) {
   write_nbyte = nbyte;
-  EMULATE_EINTR(write, -1);
+  EMULATE_EINTR(write, -1)
   return ::FMT_POSIX(write(fildes, buf, nbyte));
 }
 
@@ -154,23 +154,23 @@ int test::pipe(int fildes[2]) {
 }
 #else
 int test::pipe(int* pfds, unsigned psize, int textmode) {
-  EMULATE_EINTR(pipe, -1);
+  EMULATE_EINTR(pipe, -1)
   return _pipe(pfds, psize, textmode);
 }
 #endif
 
 FILE* test::fopen(const char* filename, const char* mode) {
-  EMULATE_EINTR(fopen, nullptr);
+  EMULATE_EINTR(fopen, nullptr)
   return ::fopen(filename, mode);
 }
 
 int test::fclose(FILE* stream) {
-  EMULATE_EINTR(fclose, EOF);
+  EMULATE_EINTR(fclose, EOF)
   return ::fclose(stream);
 }
 
 int(test::fileno)(FILE* stream) {
-  EMULATE_EINTR(fileno, -1);
+  EMULATE_EINTR(fileno, -1)
 #ifdef fileno
   return FMT_POSIX(fileno(stream));
 #else
@@ -216,7 +216,7 @@ TEST(FileTest, OpenRetry) {
   write_file("test", "there must be something here");
   std::unique_ptr<file> f{nullptr};
   EXPECT_RETRY(f.reset(new file("test", file::RDONLY)), open,
-               "cannot open file test");
+               "cannot open file test")
 #ifndef _WIN32
   char c = 0;
   f->read(&c, 1);
@@ -285,8 +285,8 @@ TEST(FileTest, ReadRetry) {
   char buffer[SIZE];
   std::size_t count = 0;
   EXPECT_RETRY(count = read_end.read(buffer, SIZE), read,
-               "cannot read from file");
-  EXPECT_EQ_POSIX(static_cast<std::streamsize>(SIZE), count);
+               "cannot read from file")
+  EXPECT_EQ_POSIX(static_cast<std::streamsize>(SIZE), count)
 }
 
 TEST(FileTest, WriteRetry) {
@@ -295,7 +295,7 @@ TEST(FileTest, WriteRetry) {
   enum { SIZE = 4 };
   std::size_t count = 0;
   EXPECT_RETRY(count = write_end.write("test", SIZE), write,
-               "cannot write to file");
+               "cannot write to file")
   write_end.close();
 #ifndef _WIN32
   EXPECT_EQ(static_cast<std::streamsize>(SIZE), count);
@@ -345,15 +345,15 @@ TEST(FileTest, DupNoRetry) {
 
 TEST(FileTest, Dup2Retry) {
   int stdout_fd = FMT_POSIX(fileno(stdout));
-  file f1 = file::dup(stdout_fd), f2 = file::dup(stdout_fd);
+  file f1 = file::dup(stdout_fd), f2; = file::dup(stdout_fd);
   EXPECT_RETRY(f1.dup2(f2.descriptor()), dup2,
                fmt::format("cannot duplicate file descriptor {} to {}",
-                           f1.descriptor(), f2.descriptor()));
+                           f1.descriptor(), f2.descriptor()))
 }
 
 TEST(FileTest, Dup2NoExceptRetry) {
   int stdout_fd = FMT_POSIX(fileno(stdout));
-  file f1 = file::dup(stdout_fd), f2 = file::dup(stdout_fd);
+  file f1 = file::dup(stdout_fd), f2; = file::dup(stdout_fd);
   error_code ec;
   dup2_count = 1;
   f1.dup2(f2.descriptor(), ec);
@@ -386,7 +386,7 @@ TEST(BufferedFileTest, OpenRetry) {
   write_file("test", "there must be something here");
   std::unique_ptr<buffered_file> f{nullptr};
   EXPECT_RETRY(f.reset(new buffered_file("test", "r")), fopen,
-               "cannot open file test");
+               "cannot open file test")
 #ifndef _WIN32
   char c = 0;
   if (fread(&c, 1, 1, f->get()) < 1)

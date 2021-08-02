@@ -1,0 +1,143 @@
+Performing C++ SOURCE FILE Test has_std_17_flag failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_092ad/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_092ad.dir\build.make CMakeFiles/cmTC_092ad.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_092ad.dir/src.cxx.obj
+D:\mingw64\bin\g++.exe -Dhas_std_17_flag  -std=c++17 -std=gnu++17 -o CMakeFiles\cmTC_092ad.dir\src.cxx.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx
+cc1plus.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_092ad.dir\build.make:77: CMakeFiles/cmTC_092ad.dir/src.cxx.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_092ad/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test has_std_1z_flag failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_9450d/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_9450d.dir\build.make CMakeFiles/cmTC_9450d.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9450d.dir/src.cxx.obj
+D:\mingw64\bin\g++.exe -Dhas_std_1z_flag  -std=c++1z -std=gnu++17 -o CMakeFiles\cmTC_9450d.dir\src.cxx.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx
+cc1plus.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_9450d.dir\build.make:77: CMakeFiles/cmTC_9450d.dir/src.cxx.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_9450d/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test SUPPORTS_VARIADIC_TEMPLATES failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_5bb9d/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_5bb9d.dir\build.make CMakeFiles/cmTC_5bb9d.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5bb9d.dir/src.cxx.obj
+D:\mingw64\bin\g++.exe -DSUPPORTS_VARIADIC_TEMPLATES  -std=gnu++17 -o CMakeFiles\cmTC_5bb9d.dir\src.cxx.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx
+cc1plus.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_5bb9d.dir\build.make:77: CMakeFiles/cmTC_5bb9d.dir/src.cxx.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_5bb9d/fast] Error 2
+
+
+Source file was:
+
+  template <class T, class ...Types>
+  struct S { typedef typename S<Types...>::type type; };
+  int main() {}
+Performing C++ SOURCE FILE Test SUPPORTS_USER_DEFINED_LITERALS failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_d7e8b/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_d7e8b.dir\build.make CMakeFiles/cmTC_d7e8b.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d7e8b.dir/src.cxx.obj
+D:\mingw64\bin\g++.exe -DSUPPORTS_USER_DEFINED_LITERALS  -std=gnu++17 -o CMakeFiles\cmTC_d7e8b.dir\src.cxx.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx
+cc1plus.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_d7e8b.dir\build.make:77: CMakeFiles/cmTC_d7e8b.dir/src.cxx.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_d7e8b/fast] Error 2
+
+
+Source file was:
+
+  void operator"" _udl(long double);
+  int main() {}
+Performing C++ SOURCE FILE Test FMT_HAS_VARIANT failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_6fa8a/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_6fa8a.dir\build.make CMakeFiles/cmTC_6fa8a.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_6fa8a.dir/src.cxx.obj
+D:\mingw64\bin\g++.exe -DFMT_HAS_VARIANT  -std=c++1z -std=gnu++17 -o CMakeFiles\cmTC_6fa8a.dir\src.cxx.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx
+cc1plus.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_6fa8a.dir\build.make:77: CMakeFiles/cmTC_6fa8a.dir/src.cxx.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_6fa8a/fast] Error 2
+
+
+Source file was:
+
+  #include <variant>
+  int main() {}
+Determining if the open exist failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_02489/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_02489.dir\build.make CMakeFiles/cmTC_02489.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_02489.dir/CheckSymbolExists.c.obj
+D:\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_02489.dir\CheckSymbolExists.c.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c
+cc1.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_02489.dir\build.make:77: CMakeFiles/cmTC_02489.dir/CheckSymbolExists.c.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_02489/fast] Error 2
+
+
+File E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <io.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef open
+  return ((int*)(&open))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the _strtod_l exist failed with the following output:
+Change Dir: E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/mingw64/bin/mingw32-make.exe -f Makefile cmTC_ec136/fast && D:/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_ec136.dir\build.make CMakeFiles/cmTC_ec136.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ec136.dir/CheckSymbolExists.c.obj
+D:\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_ec136.dir\CheckSymbolExists.c.obj -c E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c
+cc1.exe: fatal error: E:\绋嬪簭\绗簲瀛︽湡\缂栬瘧\Compiler-Homework02\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c: No such file or directory
+compilation terminated.
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_ec136.dir\build.make:77: CMakeFiles/cmTC_ec136.dir/CheckSymbolExists.c.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_ec136/fast] Error 2
+
+
+File E:/程序/第五学期/编译/Compiler-Homework02/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef _strtod_l
+  return ((int*)(&_strtod_l))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}

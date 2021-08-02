@@ -7,7 +7,7 @@
 
 #include "gtest-extra.h"
 
-#include <gtest/gtest-spi.h>
+#include "gtest/gtest-spi.h"
 #include <algorithm>
 #include <cstring>
 #include <memory>

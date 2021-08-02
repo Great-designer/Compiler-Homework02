@@ -473,11 +473,8 @@ prepare_compiletime_parts(basic_string_view<Char> format) {
 template <typename PartsContainer> class runtime_parts_provider {
  public:
   runtime_parts_provider() = delete;
-  template <typename Char>
-  runtime_parts_provider(basic_string_view<Char> format)
-      : parts_(prepare_parts<PartsContainer>(format)) {}
 
-  const PartsContainer& parts() const { return parts_; }
+    const PartsContainer& parts() const { return parts_; }
 
  private:
   PartsContainer parts_;
@@ -486,10 +483,8 @@ template <typename PartsContainer> class runtime_parts_provider {
 template <typename Format, typename PartsContainer>
 struct compiletime_parts_provider {
   compiletime_parts_provider() = delete;
-  template <typename Char>
-  FMT_CONSTEXPR compiletime_parts_provider(basic_string_view<Char>) {}
 
-  const PartsContainer& parts() const {
+    const PartsContainer& parts() const {
     static FMT_CONSTEXPR_DECL const PartsContainer prepared_parts =
         prepare_compiletime_parts<PartsContainer>(
             internal::to_string_view(Format{}));
@@ -517,45 +512,49 @@ struct parts_container_concept_check : std::true_type {
   struct check_second {};
   struct check_first : check_second {};
 
-  template <typename T> static std::false_type has_add_check(check_second);
-  template <typename T>
+    virtual
+
+    template <typename T>
   static decltype(
       (void)std::declval<T>().add(std::declval<typename T::format_part_type>()),
-      std::true_type()) has_add_check(check_first);
+      std::true_type()) has_add_check(check_first) = 0;
   typedef decltype(has_add_check<PartsContainer>(check_first())) has_add;
   static_assert(has_add::value, "PartsContainer doesn't provide add() method");
 
-  template <typename T> static std::false_type has_last_check(check_second);
-  template <typename T>
+    virtual
+
+    template <typename T>
   static decltype((void)std::declval<T>().last(),
-                  std::true_type()) has_last_check(check_first);
+                  std::true_type()) has_last_check(check_first) = 0;
   typedef decltype(has_last_check<PartsContainer>(check_first())) has_last;
   static_assert(has_last::value,
                 "PartsContainer doesn't provide last() method");
 
-  template <typename T>
-  static std::false_type has_substitute_last_check(check_second);
-  template <typename T>
+    virtual
+
+    template <typename T>
   static decltype((void)std::declval<T>().substitute_last(
                       std::declval<typename T::format_part_type>()),
-                  std::true_type()) has_substitute_last_check(check_first);
+                  std::true_type()) has_substitute_last_check(check_first) = 0;
   typedef decltype(has_substitute_last_check<PartsContainer>(
       check_first())) has_substitute_last;
   static_assert(has_substitute_last::value,
                 "PartsContainer doesn't provide substitute_last() method");
 
-  template <typename T> static std::false_type has_begin_check(check_second);
-  template <typename T>
+    virtual
+
+    template <typename T>
   static decltype((void)std::declval<T>().begin(),
-                  std::true_type()) has_begin_check(check_first);
+                  std::true_type()) has_begin_check(check_first) = 0;
   typedef decltype(has_begin_check<PartsContainer>(check_first())) has_begin;
   static_assert(has_begin::value,
                 "PartsContainer doesn't provide begin() method");
 
-  template <typename T> static std::false_type has_end_check(check_second);
-  template <typename T>
+    virtual
+
+    template <typename T>
   static decltype((void)std::declval<T>().end(),
-                  std::true_type()) has_end_check(check_first);
+                  std::true_type()) has_end_check(check_first) = 0;
   typedef decltype(has_end_check<PartsContainer>(check_first())) has_end;
   static_assert(has_end::value, "PartsContainer doesn't provide end() method");
 };
@@ -677,10 +676,7 @@ auto do_compile(const Format& format)
 }
 #endif
 
-template <typename... Args> using prepared_format_t =
-  typename basic_prepared_format<
-      std::string, parts_container<char>, Args...>::type;
-}  // namespace internal
+        }  // namespace internal
 
 #if FMT_USE_CONSTEXPR
 

@@ -337,7 +337,7 @@ DOCTEST_MSVC_SUPPRESS_WARNING(26444) // Avoid unnamed objects with custom constr
 #define DOCTEST_PLATFORM_WINDOWS
 #else // DOCTEST_PLATFORM
 #define DOCTEST_PLATFORM_LINUX
-#endif // DOCTEST_PLATFORM
+#endif // __MAC_OS_X_VERSION_MIN_REQUIRED
 
 #define DOCTEST_GLOBAL_NO_WARNINGS(var)                                                            \
     DOCTEST_CLANG_SUPPRESS_WARNING_WITH_PUSH("-Wglobal-constructors")                              \
@@ -358,7 +358,7 @@ DOCTEST_GCC_SUPPRESS_WARNING_POP
 #define DOCTEST_BREAK_INTO_DEBUGGER() ::DebugBreak()
 #else // linux
 #define DOCTEST_BREAK_INTO_DEBUGGER() ((void)0)
-#endif // linux
+#endif // DOCTEST_PLATFORM_MAC
 #endif // DOCTEST_BREAK_INTO_DEBUGGER
 
 // this is kept here for backwards compatibility since the config option was changed
@@ -1146,7 +1146,7 @@ namespace detail {
                 , m_at(at) {}
 
         DOCTEST_NOINLINE operator Result() {
-            bool res = !!lhs;
+            bool res = lhs;
             if(m_at & assertType::is_false) //!OCLINT bitwise operator in conditional
                 res = !res;
 

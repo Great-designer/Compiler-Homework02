@@ -409,7 +409,7 @@ struct error_handler {
   FMT_CONSTEXPR error_handler(const error_handler&) {}
 
   // This function is intentionally not constexpr to give a compile-time error.
-  FMT_NORETURN FMT_API void on_error(const char* message);
+  FMT_NORETURN FMT_API virtual void on_error(const char* message) = 0;
 };
 }  // namespace internal
 
@@ -428,11 +428,7 @@ class basic_parse_context : private ErrorHandler {
   using char_type = Char;
   using iterator = typename basic_string_view<Char>::iterator;
 
-  explicit FMT_CONSTEXPR basic_parse_context(basic_string_view<Char> format_str,
-                                             ErrorHandler eh = ErrorHandler())
-      : ErrorHandler(eh), format_str_(format_str), next_arg_id_(0) {}
-
-  // Returns an iterator to the beginning of the format string range being
+    // Returns an iterator to the beginning of the format string range being
   // parsed.
   FMT_CONSTEXPR iterator begin() const FMT_NOEXCEPT {
     return format_str_.begin();
@@ -471,13 +467,9 @@ class basic_parse_context : private ErrorHandler {
   FMT_CONSTEXPR ErrorHandler error_handler() const { return *this; }
 };
 
-using format_parse_context = basic_parse_context<char>;
-using wformat_parse_context = basic_parse_context<wchar_t>;
+    using parse_context FMT_DEPRECATED = basic_parse_context<char>;
 
-using parse_context FMT_DEPRECATED = basic_parse_context<char>;
-using wparse_context FMT_DEPRECATED = basic_parse_context<wchar_t>;
-
-template <typename Context> class basic_format_arg;
+    template <typename Context> class basic_format_arg;
 template <typename Context> class basic_format_args;
 
 // A formatter for objects of type T.
@@ -487,12 +479,7 @@ struct formatter {
   formatter() = delete;
 };
 
-template <typename T, typename Char, typename Enable = void>
-struct FMT_DEPRECATED convert_to_int
-    : bool_constant<!std::is_arithmetic<T>::value &&
-                    std::is_convertible<T, int>::value> {};
-
-namespace internal {
+    namespace internal {
 
 // Specifies if T has an enabled formatter specialization. A type can be
 // formattable even if it doesn't have a formatter e.g. via a conversion.
@@ -530,9 +517,8 @@ template <typename T> class buffer {
 
  public:
   using value_type = T;
-  using const_reference = const T&;
 
-  virtual ~buffer() {}
+            virtual ~buffer() {}
 
   T* begin() FMT_NOEXCEPT { return ptr_; }
   T* end() FMT_NOEXCEPT { return ptr_ + size_; }
@@ -570,8 +556,8 @@ template <typename T> class buffer {
     ptr_[size_++] = value;
   }
 
-  /** Appends data to the end of the buffer. */
-  template <typename U> void append(const U* begin, const U* end);
+            virtual /** Appends data to the end of the buffer. */
+  template <typename U> void append(const U* begin, const U* end) = 0;
 
   T& operator[](std::size_t index) { return ptr_[index]; }
   const T& operator[](std::size_t index) const { return ptr_[index]; }
@@ -988,9 +974,14 @@ class locale_ref {
 
  public:
   locale_ref() : locale_(nullptr) {}
-  template <typename Locale> explicit locale_ref(const Locale& loc);
 
-  template <typename Locale> Locale get() const;
+    virtual
+
+    template <typename Locale> explicit locale_ref(const Locale& loc) = 0;
+
+    virtual
+
+    template <typename Locale> Locale get() const = 0;
 };
 
 template <typename> constexpr unsigned long long encode_types() { return 0; }
@@ -1040,12 +1031,11 @@ template <typename OutputIt, typename Char> class basic_format_context {
  public:
   using iterator = OutputIt;
   using format_arg = basic_format_arg<basic_format_context>;
-  template <typename T> using formatter_type = formatter<T, char_type>;
 
-  /**
-   Constructs a ``basic_format_context`` object. References to the arguments are
-   stored in the object so make sure they have appropriate lifetimes.
-   */
+        /**
+         Constructs a ``basic_format_context`` object. References to the arguments are
+         stored in the object so make sure they have appropriate lifetimes.
+         */
   basic_format_context(OutputIt out,
                        basic_format_args<basic_format_context> ctx_args,
                        internal::locale_ref loc = internal::locale_ref())
@@ -1100,9 +1090,8 @@ template <typename Context, typename... Args> class format_arg_store {
   static constexpr unsigned long long types =
       is_packed ? internal::encode_types<Context, Args...>()
                 : internal::is_unpacked_bit | num_args;
-  FMT_DEPRECATED static constexpr unsigned long long TYPES = types;
 
-  format_arg_store(const Args&... args)
+        format_arg_store(const Args&... args)
       : data_{internal::make_arg<is_packed, Context>(args)...} {}
 };
 
@@ -1122,9 +1111,7 @@ inline format_arg_store<Context, Args...> make_format_args(
 
 /** Formatting arguments. */
 template <typename Context> class basic_format_args {
- public:
-  using size_type = int;
-  using format_arg = basic_format_arg<Context>;
+        using format_arg = basic_format_arg<Context>;
 
  private:
   // To reduce compiled code size per formatting function call, types of first
@@ -1253,8 +1240,6 @@ template <typename Char> struct named_arg_base {
 template <typename T, typename Char> struct named_arg : named_arg_base<Char> {
   const T& value;
 
-  named_arg(basic_string_view<Char> name, const T& val)
-      : named_arg_base<Char>(name), value(val) {}
 };
 
 template <typename..., typename S, FMT_ENABLE_IF(!is_compile_string<S>::value)>

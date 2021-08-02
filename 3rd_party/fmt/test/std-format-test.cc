@@ -1,4 +1,4 @@
-#include <format>
+#include "format"
 #include "gtest.h"
 
 TEST(StdFormatTest, Escaping) {
@@ -72,7 +72,7 @@ TEST(StdFormatTest, Int) {
   EXPECT_EQ(s3, "1,234");
 }
 
-#include <format>
+#include "format"
 
 enum color { red, green, blue };
 

@@ -1,6 +1,6 @@
 """Pythonic command-line interface parser that will make you smile.
 
- * http://docopt.org
+ * https://docopt.org
  * Repository and issue-tracker: https://github.com/docopt/docopt
  * Licensed under terms of MIT license (see LICENSE-MIT)
  * Copyright (c) 2013 Vladimir Keleshev, vladimir@keleshev.com
@@ -158,7 +158,7 @@ class Argument(LeafPattern):
     @classmethod
     def parse(class_, source):
         name = re.findall('(<\S*?>)', source)[0]
-        value = re.findall('\[default: (.*)\]', source, flags=re.I)
+        value = re.findall('\[default: (.*)]', source, flags=re.I)
         return class_(name, value[0] if value else None)
 
 
@@ -197,7 +197,7 @@ class Option(LeafPattern):
             else:
                 argcount = 1
         if argcount:
-            matched = re.findall('\[default: (.*)\]', description, flags=re.I)
+            matched = re.findall('\[default: (.*)]', description, flags=re.I)
             value = matched[0] if matched else None
         return class_(short, long, argcount, value)
 
@@ -287,7 +287,7 @@ class Tokens(list):
 
     @staticmethod
     def from_pattern(source):
-        source = re.sub(r'([\[\]\(\)\|]|\.\.\.)', r' \1 ', source)
+        source = re.sub(r'([\[\]()|]|\.\.\.)', r' \1 ', source)
         source = [s for s in re.split('\s+|(\S*<.*?>)', source) if s]
         return Tokens(source, error=DocoptLanguageError)
 
@@ -545,7 +545,7 @@ def docopt(doc, argv=None, help=True, version=None, options_first=False):
 
     See also
     --------
-    * For video introduction see http://docopt.org
+    * For video introduction see https://docopt.org
     * Full documentation is available in README.rst as well as online
       at https://github.com/docopt/docopt#readme
 

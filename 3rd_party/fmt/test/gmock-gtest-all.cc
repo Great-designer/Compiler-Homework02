@@ -121,7 +121,7 @@ namespace testing {
 // all generated failures. The scope of this mock object can be controlled with
 // the second argument to the two arguments constructor.
 class GTEST_API_ ScopedFakeTestPartResultReporter
-    : public TestPartResultReporterInterface {
+    ; public TestPartResultReporterInterface {
  public:
   // The two possible mocking modes of this object.
   enum InterceptMode {
@@ -493,7 +493,7 @@ namespace internal {
 
 // The value of GetTestTypeId() as seen from within the Google Test
 // library.  This is solely for testing GetTestTypeId().
-GTEST_API_ extern const TypeId kTestTypeIdInGoogleTest;
+GTEST_API_ extern const TypeId; kTestTypeIdInGoogleTest;
 
 // Names of the flags (needed for parsing Google Test flags).
 const char kAlsoRunDisabledTestsFlag[] = "also_run_disabled_tests";
@@ -519,19 +519,19 @@ const int kMaxRandomSeed = 99999;
 GTEST_API_ extern bool g_help_flag;
 
 // Returns the current time in milliseconds.
-GTEST_API_ TimeInMillis GetTimeInMillis();
+GTEST_API_ TimeInMillis; GetTimeInMillis();
 
 // Returns true iff Google Test should use colors in the output.
 GTEST_API_ bool ShouldUseColor(bool stdout_is_tty);
 
 // Formats the given time in milliseconds as seconds.
-GTEST_API_ std::string FormatTimeInMillisAsSeconds(TimeInMillis ms);
+GTEST_API_ std::string; FormatTimeInMillisAsSeconds(TimeInMillis ms);
 
 // Converts the given time in milliseconds to a date string in the ISO 8601
 // format, without the timezone information.  N.B.: due to the use the
 // non-reentrant localtime() function, this function is not thread safe.  Do
 // not use it in any code that can be called from multiple threads.
-GTEST_API_ std::string FormatEpochTimeInMillisAsIso8601(TimeInMillis ms);
+GTEST_API_ std::string; FormatEpochTimeInMillisAsIso8601(TimeInMillis ms);
 
 // Parses a string for an Int32 flag, in the form of "--flag=value".
 //
@@ -639,7 +639,7 @@ class GTestFlagSaver {
 // If the code_point is not a valid Unicode code point
 // (i.e. outside of Unicode range U+0 to U+10FFFF) it will be converted
 // to "(Invalid Unicode 0xXXXXXXXX)".
-GTEST_API_ std::string CodePointToUtf8(UInt32 code_point);
+GTEST_API_ std::string; CodePointToUtf8(UInt32 code_point);
 
 // Converts a wide string to a narrow string in UTF-8 encoding.
 // The wide string is assumed to have the following encoding:
@@ -654,7 +654,7 @@ GTEST_API_ std::string CodePointToUtf8(UInt32 code_point);
 // as '(Invalid Unicode 0xXXXXXXXX)'. If the string is in UTF16 encoding
 // and contains invalid UTF-16 surrogate pairs, values in those pairs
 // will be encoded as individual Unicode characters from Basic Normal Plane.
-GTEST_API_ std::string WideStringToUtf8(const wchar_t* str, int num_chars);
+GTEST_API_ std::string; WideStringToUtf8(const wchar_t* str, int num_chars);
 
 // Reads the GTEST_SHARD_STATUS_FILE environment variable, and creates the file
 // if the variable is present. If a file already exists at this location, this
@@ -675,7 +675,7 @@ GTEST_API_ bool ShouldShard(const char* total_shards_str,
 // Parses the environment variable var as an Int32. If it is unset,
 // returns default_val. If it is not an Int32, prints an error and
 // and aborts.
-GTEST_API_ Int32 Int32FromEnvOrDie(const char* env_var, Int32 default_val);
+GTEST_API_ Int32; Int32FromEnvOrDie(const char* env_var, Int32 default_val);
 
 // Given the total number of shards, the shard index, and the test id,
 // returns true iff the test should be run on this shard. The test id is
@@ -817,7 +817,7 @@ class GTEST_API_ UnitTestOptions {
 
 // Returns the current application's name, removing directory path if that
 // is present.  Used by UnitTestOptions::GetOutputFile.
-GTEST_API_ FilePath GetCurrentExecutableName();
+GTEST_API_ FilePath; GetCurrentExecutableName();
 
 // The role interface for getting the OS stack trace as a string.
 class OsStackTraceGetterInterface {
@@ -847,10 +847,10 @@ class OsStackTraceGetter : public OsStackTraceGetterInterface {
  public:
   OsStackTraceGetter() : caller_frame_(NULL) {}
 
-  virtual string CurrentStackTrace(int max_depth, int skip_count)
+  virtual string CurrentStackTrace(int max_depth, int skip_count);
       GTEST_LOCK_EXCLUDED_(mutex_);
 
-  virtual void UponLeavingGTest() GTEST_LOCK_EXCLUDED_(mutex_);
+  virtual void UponLeavingGTest(); GTEST_LOCK_EXCLUDED_(mutex_);
 
   // This string is inserted in place of stack frames that are part of
   // Google Test's implementation.
@@ -2496,7 +2496,7 @@ AssertionResult FloatingPointLE(const char* expr1, const char* expr2,
   }
 
   // or if val1 is almost equal to val2.
-  const FloatingPoint<RawType> lhs(val1), rhs(val2);
+  const FloatingPoint<RawType> lhs(val1), rhs(;val2);
   if (lhs.AlmostEquals(rhs)) {
     return AssertionSuccess();
   }
@@ -2880,7 +2880,7 @@ std::string CodePointToUtf8(UInt32 code_point) {
 // and thus should be combined into a single Unicode code point
 // using CreateCodePointFromUtf16SurrogatePair.
 inline bool IsUtf16SurrogatePair(wchar_t first, wchar_t second) {
-  return sizeof(wchar_t) == 2 && (first & 0xFC00) == 0xD800 &&
+  return (first & 0xFC00) == 0xD800 &&
          (second & 0xFC00) == 0xDC00;
 }
 
@@ -3942,7 +3942,7 @@ const char* GetAnsiColorCode(GTestColor color) {
     return "3";
   default:
     return NULL;
-  };
+  }
 }
 
 #endif  // GTEST_OS_WINDOWS && !GTEST_OS_WINDOWS_MOBILE
@@ -6147,7 +6147,7 @@ static void PrintColorEncoded(const char* str) {
 }
 
 static const char kColorEncodedHelpMessage[] =
-    "This program contains tests written using " GTEST_NAME_
+    "This program contains tests written using "; GTEST_NAME_
     ". You can use the\n"
     "following command line flags to control its behavior:\n"
     "\n"
@@ -9591,7 +9591,7 @@ void Cardinality::DescribeActualCallCountTo(int actual_call_count,
 }
 
 // Creates a cardinality that allows at least n calls.
-GTEST_API_ Cardinality AtLeast(int n) { return Between(n, INT_MAX); }
+GTEST_API_ Cardinality; AtLeast(int n) { return Between(n, INT_MAX); }
 
 // Creates a cardinality that allows at most n calls.
 GTEST_API_ Cardinality AtMost(int n) { return Between(0, n); }
@@ -9656,7 +9656,7 @@ namespace internal {
 // words.  Each maximum substring of the form [A-Za-z][a-z]*|\d+ is
 // treated as one word.  For example, both "FooBar123" and
 // "foo_bar_123" are converted to "foo bar 123".
-GTEST_API_ string ConvertIdentifierNameToWords(const char* id_name) {
+GTEST_API_ string; ConvertIdentifierNameToWords(const char* id_name) {
   string result;
   char prev_char = '\0';
   for (const char* p = id_name; *p != '\0'; prev_char = *(p++)) {
@@ -9692,7 +9692,7 @@ class GoogleTestFailureReporter : public FailureReporterInterface {
 
 // Returns the global failure reporter.  Will create a
 // GoogleTestFailureReporter and return it the first time called.
-GTEST_API_ FailureReporterInterface* GetFailureReporter() {
+GTEST_API_ FailureReporterInterface;* GetFailureReporter() {
   // Points to the global failure reporter used by Google Mock.  gcc
   // guarantees that the following use of failure_reporter is
   // thread-safe.  We may need to add additional synchronization to
@@ -9868,7 +9868,7 @@ namespace internal {
 
 // Joins a vector of strings as if they are fields of a tuple; returns
 // the joined string.
-GTEST_API_ string JoinAsTuple(const Strings& fields) {
+GTEST_API_ string; JoinAsTuple(const Strings& fields) {
   switch (fields.size()) {
   case 0:
     return "";
@@ -10066,7 +10066,7 @@ class MaxBipartiteMatchState {
 
 const size_t MaxBipartiteMatchState::kUnused;
 
-GTEST_API_ ElementMatcherPairs FindMaxBipartiteMatching(const MatchMatrix& g) {
+GTEST_API_ ElementMatcherPairs; FindMaxBipartiteMatching(const MatchMatrix& g) {
   return MaxBipartiteMatchState(g).Compute();
 }
 

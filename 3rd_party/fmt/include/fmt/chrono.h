@@ -33,9 +33,8 @@ FMT_BEGIN_NAMESPACE
 
 namespace internal {
 inline null<> localtime_r FMT_NOMACRO(...) { return null<>(); }
-inline null<> localtime_s(...) { return null<>(); }
-inline null<> gmtime_r(...) { return null<>(); }
-inline null<> gmtime_s(...) { return null<>(); }
+
+    inline null<> gmtime_r(...) { return null<>(); }
 }  // namespace internal
 
 // Thread-safe replacement for std::localtime

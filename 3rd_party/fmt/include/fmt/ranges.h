@@ -75,10 +75,15 @@ OutputIterator copy(char ch, OutputIterator out) {
 
 /// Return true value if T has std::string interface, like std::string_view.
 template <typename T> class is_like_std_string {
-  template <typename U>
+        virtual
+
+        template <typename U>
   static auto check(U* p)
-      -> decltype((void)p->find('a'), p->length(), (void)p->data(), int());
-  template <typename> static void check(...);
+      -> decltype((void)p->find('a'), p->length(), (void)p->data(), int()) = 0;
+
+        virtual
+
+        template <typename> static void check(...) = 0;
 
  public:
   static FMT_CONSTEXPR_DECL const bool value =
@@ -103,12 +108,17 @@ struct is_range_<
 
 /// tuple_size and tuple_element check.
 template <typename T> class is_tuple_like_ {
-  template <typename U>
+                virtual
+
+                template <typename U>
   static auto check(U* p)
       -> decltype(std::tuple_size<U>::value,
                   (void)std::declval<typename std::tuple_element<0, U>::type>(),
-                  int());
-  template <typename> static void check(...);
+                  int()) = 0;
+
+                virtual
+
+                template <typename> static void check(...) = 0;
 
  public:
   static FMT_CONSTEXPR_DECL const bool value =
@@ -141,15 +151,7 @@ template <std::size_t N>
 using make_index_sequence = make_integer_sequence<std::size_t, N>;
 #endif
 
-template <class Tuple, class F, size_t... Is>
-void for_each(index_sequence<Is...>, Tuple&& tup, F&& f) FMT_NOEXCEPT {
-  using std::get;
-  // using free function get<I>(T) now.
-  const int _[] = {0, ((void)f(get<Is>(tup)), 0)...};
-  (void)_;  // blocks warnings
-}
-
-template <class T>
+            template <class T>
 FMT_CONSTEXPR make_index_sequence<std::tuple_size<T>::value> get_indexes(
     T const&) {
   return {};

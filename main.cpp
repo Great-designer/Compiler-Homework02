@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
   if (input_file != "-") {
     inf.open(input_file, std::ios::in);
     if (!inf) {
-      fmt::print(stderr, "Fail to open {} for reading.\n", input_file);
+      printf(stderr, "Fail to open {} for reading.\n", input_file);
       exit(2);
     }
     input = &inf;
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
   if (output_file != "-") {
     outf.open(output_file, std::ios::out | std::ios::trunc);
     if (!outf) {
-      fmt::print(stderr, "Fail to open {} for writing.\n", output_file);
+      printf(stderr, "Fail to open {} for writing.\n", output_file);
       exit(2);
     }
     output = &outf;

@@ -32,7 +32,7 @@ def install_dependencies():
     check_call(['sudo', 'apt-get', 'install', 'python-virtualenv', 'nodejs'])
     check_call(['sudo', 'npm', 'install', '-g', 'less@2.6.1', 'less-plugin-clean-css'])
     deb_file = 'doxygen_1.8.6-2_amd64.deb'
-    urllib.urlretrieve('http://mirrors.kernel.org/ubuntu/pool/main/d/doxygen/' +
+    urllib.urlretrieve('https://mirrors.kernel.org/ubuntu/pool/main/d/doxygen/' +
                        deb_file, deb_file)
     check_call(['sudo', 'dpkg', '-i', deb_file])
 

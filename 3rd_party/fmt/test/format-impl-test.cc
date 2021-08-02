@@ -146,7 +146,7 @@ TEST(FPTest, GrisuFormatCompilesWithNonIEEEDouble) {
 template <typename T> struct value_extractor {
   T operator()(T value) { return value; }
 
-  template <typename U> FMT_NORETURN T operator()(U) {
+  template <typename U> FMT_NORETURN T; operator()(U) {
     throw std::runtime_error(fmt::format("invalid type {}", typeid(U).name()));
   }
 };

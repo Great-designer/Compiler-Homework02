@@ -35,7 +35,7 @@
                                    // different values
      // s == "42"
 
-  Thanks `@stryku (Mateusz Janek) <https://github.com/stryku>`_.
+  Thanks `@stryku () <https://github.com/stryku>`_.
 
 * Fixed handling of dynamic width in chrono formatter:
 
@@ -45,7 +45,7 @@
      //                        ^ width argument index                     ^ width
      // s == "03:25:45    "
 
-  Thanks Howard Hinnant.
+Hinnant.
 
 * Added ``fmt::format`` and ``fmt::vformat`` overloads that take ``text_style``
   (`#993 <https://github.com/fmtlib/fmt/issues/993>`_,
@@ -58,7 +58,7 @@
      std::string message = fmt::format(fmt::emphasis::bold | fg(fmt::color::red),
                                        "The answer is {}.", 42);
 
-  Thanks `@Naios (Denis Blank) <https://github.com/Naios>`_.
+  Thanks `@Naios () <https://github.com/Naios>`_.
 
 * Stopped setting ``CMAKE_BUILD_TYPE`` if fmt is a subproject
   (`#1081 <https://github.com/fmtlib/fmt/issues/1081>`_).
@@ -89,8 +89,8 @@
      Default format: 42s 100ms
      strftime-like format: 03:15:30
 
-* Added experimental support for emphasis (bold, italic, underline,
-  strikethrough), colored output to a file stream, and improved colored
+* Added experimental support for emphasis (bold, italic, underline
+), colored output to a file stream, and improved colored
   formatting API
   (`#961 <https://github.com/fmtlib/fmt/pull/961>`_,
   `#967 <https://github.com/fmtlib/fmt/pull/967>`_,
@@ -109,7 +109,8 @@
              "Hello, {}!\n", "世界");
      }
 
-  prints the following on modern terminals with RGB color support:
+  prints the following on
+color support:
 
   .. image:: https://user-images.githubusercontent.com/576385/
              50405788-b66e7500-076e-11e9-9592-7324d1f951d8.png
@@ -224,11 +225,12 @@
   Use ``fmt::visit_format_arg``, ``format_parse_context``, and
   ``wformat_parse_context`` instead.
 
-* Removed undocumented ``basic_fixed_buffer`` which has been superseded by the
+*  ``basic_fixed_buffer`` which has
+by the
   iterator-based API
   (`#873 <https://github.com/fmtlib/fmt/issues/873>`_,
   `#902 <https://github.com/fmtlib/fmt/pull/902>`_).
-  Thanks `@superfunc (hollywood programmer) <https://github.com/superfunc>`_.
+  Thanks `@superfunc () <https://github.com/superfunc>`_.
 
 * Disallowed repeated leading zeros in an argument ID:
 
@@ -238,7 +240,8 @@
 
 * Reintroduced support for gcc 4.4.
 
-* Fixed compilation on platforms with exotic ``double``
+* Fixed compilation on platforms
+``double``
   (`#878 <https://github.com/fmtlib/fmt/issues/878>`_).
 
 * Improved documentation
@@ -247,14 +250,15 @@
   `#901 <https://github.com/fmtlib/fmt/pull/901>`_,
   `#906 <https://github.com/fmtlib/fmt/pull/906>`_,
   `#979 <https://github.com/fmtlib/fmt/pull/979>`_).
-  Thanks `@kookjr (Mathew Cucuzella) <https://github.com/kookjr>`_,
-  `@DarkDimius (Dmitry Petrashko) <https://github.com/DarkDimius>`_,
+  Thanks `@kookjr () <https://github.com/kookjr>`_,
+  `@DarkDimius () <https://github.com/DarkDimius>`_,
   `@HecticSerenity <https://github.com/HecticSerenity>`_.
 
-* Added pkgconfig support which makes it easier to consume the library from
+*
+support which makes it easier to consume the library from
   meson and other build systems
   (`#916 <https://github.com/fmtlib/fmt/pull/916>`_).
-  Thanks `@colemickens (Cole Mickens) <https://github.com/colemickens>`_.
+  Thanks `@colemickens () <https://github.com/colemickens>`_.
 
 * Various build improvements
   (`#909 <https://github.com/fmtlib/fmt/pull/909>`_,
@@ -262,7 +266,7 @@
   `#937 <https://github.com/fmtlib/fmt/pull/937>`_,
   `#953 <https://github.com/fmtlib/fmt/pull/953>`_,
   `#959 <https://github.com/fmtlib/fmt/pull/959>`_).
-  Thanks `@tchaikov (Kefu Chai) <https://github.com/tchaikov>`_,
+  Thanks `@tchaikov () <https://github.com/tchaikov>`_,
   `@luncliff (Park DongHa) <https://github.com/luncliff>`_,
   `@AndreasSchoenle (Andreas Schönle) <https://github.com/AndreasSchoenle>`_,
   `@hotwatermorning <https://github.com/hotwatermorning>`_,
@@ -297,12 +301,12 @@
   `#977 <https://github.com/fmtlib/fmt/issues/977>`_,
   `#983 <https://github.com/fmtlib/fmt/pull/983>`_,
   `#989 <https://github.com/fmtlib/fmt/pull/989>`_).
-  Thanks `@Luthaf (Guillaume Fraux) <https://github.com/Luthaf>`_,
-  `@stevenhoving (Steven Hoving) <https://github.com/stevenhoving>`_,
-  `@christinaa (Kristina Brooks) <https://github.com/christinaa>`_,
-  `@lgritz (Larry Gritz) <https://github.com/lgritz>`_,
+  Thanks `@Luthaf () <https://github.com/Luthaf>`_,
+  `@stevenhoving () <https://github.com/stevenhoving>`_,
+  `@christinaa () <https://github.com/christinaa>`_,
+  `@lgritz () <https://github.com/lgritz>`_,
   `@DanielaE (Daniela Engert) <https://github.com/DanielaE>`_,
-  `@0x8000-0000 (Sign Bit) <https://github.com/0x8000-0000>`_,
+  `@0x8000-0000 () <https://github.com/0x8000-0000>`_,
   `@liuping1997 <https://github.com/liuping1997>`_.
 
 5.2.1 - 2018-09-21
@@ -314,7 +318,7 @@
 
 * Fixed linkage errors on older gcc.
 
-* Prevented ``fmt/range.h`` from specializing ``fmt::basic_string_view``
+* Prevented ``fmt/range.h``  ``fmt::basic_string_view``
   (`#865 <https://github.com/fmtlib/fmt/issues/865>`_,
   `#868 <https://github.com/fmtlib/fmt/pull/868>`_).
   Thanks `@hhggit (dual) <https://github.com/hhggit>`_.
@@ -325,7 +329,7 @@
 
 * Disabled templated user-defined literals when compiled under nvcc
   (`#875 <https://github.com/fmtlib/fmt/pull/875>`_).
-  Thanks `@CandyGumdrop (Candy Gumdrop) <https://github.com/CandyGumdrop>`_,
+  Thanks `@CandyGumdrop () <https://github.com/CandyGumdrop>`_,
 
 * Fixed ``format_to`` formatting to ``wmemory_buffer``
   (`#874 <https://github.com/fmtlib/fmt/issues/874>`_).
@@ -333,7 +337,8 @@
 5.2.0 - 2018-09-13
 ------------------
 
-* Optimized format string parsing and argument processing which resulted in up
+* Optimized format string parsing and
+in up
   to 5x speed up on long format strings and significant performance boost on
   various benchmarks. For example, version 5.2 is 2.22x faster than 5.1 on
   decimal integer formatting with ``format_to`` (macOS, clang-902.0.39.2):
@@ -386,30 +391,30 @@
   In particular, this makes formatting function work with
   ``folly::StringPiece``.
 
-* Implemented preliminary support for ``char*_t`` by replacing the ``format``
+*  support for ````  the ``format``
   function overloads with a single function template parameterized on the string
   type.
 
 * Added support for dynamic argument lists
   (`#814 <https://github.com/fmtlib/fmt/issues/814>`_,
   `#819 <https://github.com/fmtlib/fmt/pull/819>`_).
-  Thanks `@MikePopoloski (Michael Popoloski)
+  Thanks `@MikePopoloski ()
   <https://github.com/MikePopoloski>`_.
 
 * Reduced executable size overhead for embedded targets using newlib nano by
   making locale dependency optional
   (`#839 <https://github.com/fmtlib/fmt/pull/839>`_).
-  Thanks `@teajay-fr (Thomas Benard) <https://github.com/teajay-fr>`_.
+  Thanks `@teajay- Benard) <https://github.com/teajay-fr>`_.
 
 * Keep ``noexcept`` specifier when exceptions are disabled
   (`#801 <https://github.com/fmtlib/fmt/issues/801>`_,
   `#810 <https://github.com/fmtlib/fmt/pull/810>`_).
-  Thanks `@qis (Alexej Harm) <https://github.com/qis>`_.
+  Thanks `@qis () <https://github.com/qis>`_.
 
 * Fixed formatting of user-defined types providing ``operator<<`` with
   ``format_to_n``
   (`#806 <https://github.com/fmtlib/fmt/pull/806>`_).
-  Thanks `@mkurdej (Marek Kurdej) <https://github.com/mkurdej>`_.
+  Thanks `@mkurdej () <https://github.com/mkurdej>`_.
 
 * Fixed dynamic linkage of new symbols
   (`#808 <https://github.com/fmtlib/fmt/issues/808>`_).
@@ -437,7 +442,7 @@
   `#854 <https://github.com/fmtlib/fmt/pull/854>`_).
   Thanks `@henryiii (Henry Schreiner) <https://github.com/henryiii>`_,
   `@medithe <https://github.com/medithe>`_, and
-  `@eliasdaler (Elias Daler) <https://github.com/eliasdaler>`_.
+  `@eliasdaler () <https://github.com/eliasdaler>`_.
 
 5.1.0 - 2018-07-05
 ------------------
@@ -474,7 +479,7 @@
   to allow specialization for user-defined types
   (`#751 <https://github.com/fmtlib/fmt/issues/751>`_,
   `#759 <https://github.com/fmtlib/fmt/pull/759>`_).
-  Thanks `@drrlvn (Dror Levin) <https://github.com/drrlvn>`_.
+  Thanks `@drrlvn () <https://github.com/drrlvn>`_.
 
 * Added more compilers to continuous integration and increased ``FMT_PEDANTIC``
   warning levels
@@ -486,7 +491,7 @@
 * Fixed handling of user-defined types in ``format_to``
   (`#793 <https://github.com/fmtlib/fmt/issues/793>`_).
 
-* Forced linking of inline ``vformat`` functions into the library
+*  of inline ``vformat`` functions into the library
   (`#795 <https://github.com/fmtlib/fmt/issues/795>`_).
 
 * Fixed incorrect call to on_align in ``'{:}='``
@@ -519,13 +524,14 @@
   Thanks `@Remotion (Remo) <https://github.com/Remotion>`_,
   `@gabime (Gabi Melman) <https://github.com/gabime>`_,
   `@foonathan (Jonathan Müller) <https://github.com/foonathan>`_,
-  `@Dark-Passenger (Dhruv Paranjape) <https://github.com/Dark-Passenger>`_, and
-  `@0x8000-0000 (Sign Bit) <https://github.com/0x8000-0000>`_.
+  `@Dark- Paranjape) <https://github.com/Dark-Passenger>`_, and
+  `@0x8000-0000 () <https://github.com/0x8000-0000>`_.
 
 5.0.0 - 2018-05-21
 ------------------
 
-* Added a requirement for partial C++11 support, most importantly variadic
+* Added a requirement for partial C++11 support,
+variadic
   templates and type traits, and dropped ``FMT_VARIADIC_*`` emulation macros.
   Variadic templates are available since GCC 4.4, Clang 2.9 and MSVC 18.0 (2013).
   For older compilers use {fmt} `version 4.x
@@ -561,7 +567,8 @@
   the latter is not available, checks will be performed at runtime.
 
 * Separated format string parsing and formatting in the extension API to enable
-  compile-time format string processing. For example
+  compile-time format
+. For example
 
   .. code:: c++
 
@@ -661,7 +668,7 @@
 * Added the ``make_printf_args`` function for capturing ``printf`` arguments
   (`#687 <https://github.com/fmtlib/fmt/issues/687>`_,
   `#694 <https://github.com/fmtlib/fmt/pull/694>`_).
-  Thanks `@Kronuz (Germán Méndez Bravo) <https://github.com/Kronuz>`_.
+  Thanks `@Kronuz ( Bravo) <https://github.com/Kronuz>`_.
 
 * Added prefix ``v`` to non-variadic functions taking ``format_args`` to
   distinguish them from variadic ones:
@@ -728,7 +735,8 @@
   <https://fmt.dev/dev/api.html#format-api>`_ with compile-time handling of
   format strings.
 
-* Disallowed formatting of multibyte strings into a wide character target
+* Disallowed formatting
+strings into a wide character target
   (`#606 <https://github.com/fmtlib/fmt/pull/606>`_).
 
 * Improved documentation
@@ -737,20 +745,20 @@
   `#617 <https://github.com/fmtlib/fmt/pull/617>`_,
   `#661 <https://github.com/fmtlib/fmt/pull/661>`_,
   `#680 <https://github.com/fmtlib/fmt/pull/680>`_).
-  Thanks `@ibell (Ian Bell) <https://github.com/ibell>`_,
-  `@mihaitodor (Mihai Todor) <https://github.com/mihaitodor>`_, and
+  Thanks `@ibell () <https://github.com/ibell>`_,
+  `@mihaitodor () <https://github.com/mihaitodor>`_, and
   `@johnthagen <https://github.com/johnthagen>`_.
 
 * Implemented more efficient handling of large number of format arguments.
 
-* Introduced an inline namespace for symbol versioning.
+* Introduced an inline namespace for .
 
 * Added debug postfix ``d`` to the ``fmt`` library name
   (`#636 <https://github.com/fmtlib/fmt/issues/636>`_).
 
-* Removed unnecessary ``fmt/`` prefix in includes
+*  ``fmt/`` prefix in includes
   (`#397 <https://github.com/fmtlib/fmt/pull/397>`_).
-  Thanks `@chronoxor (Ivan Shynkarenka) <https://github.com/chronoxor>`_.
+  Thanks `@chronoxor () <https://github.com/chronoxor>`_.
 
 * Moved ``fmt/*.h`` to ``include/fmt/*.h`` to prevent irrelevant files and
   directories appearing on the include search paths when fmt is used as a

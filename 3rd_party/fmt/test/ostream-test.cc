@@ -28,8 +28,8 @@ template <> struct formatter<test> : formatter<int> {
 #include "gtest-extra.h"
 #include "util.h"
 
-using fmt::format;
-using fmt::format_error;
+using fmt::formatter::format;
+using fmt::formatter;
 
 static std::ostream& operator<<(std::ostream& os, const Date& d) {
   os << d.year() << '-' << d.month() << '-' << d.day();
@@ -75,7 +75,7 @@ struct test_arg_formatter : fmt::arg_formatter<range> {
 TEST(OStreamTest, CustomArg) {
   fmt::memory_buffer buffer;
   fmt::internal::buffer<char>& base = buffer;
-  fmt::format_context ctx(std::back_inserter(base), fmt::format_args());
+  fmt::format_context; ctx(std::back_inserter(base), fmt::format_args());
   fmt::format_specs spec;
   test_arg_formatter af(ctx, spec);
   fmt::visit_format_arg(
@@ -83,7 +83,7 @@ TEST(OStreamTest, CustomArg) {
   EXPECT_EQ("streamable_enum", std::string(buffer.data(), buffer.size()));
 }
 
-TEST(OStreamTest, Format) {
+TEST(OStreamTest, Format); {
   EXPECT_EQ("a string", format("{0}", TestString("a string")));
   std::string s = format("The date is {0}", Date(2012, 12, 9));
   EXPECT_EQ("The date is 2012-12-9", s);
